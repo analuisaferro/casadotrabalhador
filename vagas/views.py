@@ -473,17 +473,17 @@ def encaminhamento(request, id, user_id=0):
     if str(int(user_id)) != str(int(0)):
         user = User.objects.get(id=user_id)
     else:
-        user=False
+        user = False
 
     from datetime import date
-    today = date.today()    
-    context={
-                'vaga': candidato.vaga,
-                'date': today,
-                'candidato': candidato,
-                'sistema': True,   
-                'user': user             
-            }
+    today = date.today()
+    context = {
+        'vaga': candidato.vaga,
+        'date': today,
+        'candidato': candidato,
+        'sistema': True,
+        'user': user
+    }
     if request.user.is_authenticated:
         return render(request, 'vagas/encaminhar.html', context)
     return render(request, 'vagas/encaminhamento_online.html', context)
@@ -521,7 +521,7 @@ def candidatarse(request, id):
 
             try:
                 cpf = validate_CPF(request.POST['cpf'])
-                candidato = Candidato.objects.get(cpf=cpf, vaga_id = id)
+                candidato = Candidato.objects.get(cpf=cpf, vaga_id=id)
                 form = Form_Candidato(request.POST, instance=candidato)
 
             except Exception as e:
@@ -591,15 +591,16 @@ def vagascomcandidatos(request):
     online = 0
     balcao2 = 0
     online2 = 0
-    buscar=False
+    buscar = False
 
     vagas = Vaga_Emprego.objects.filter(ativo=True)
     vagas_desativadas = Vaga_Emprego.objects.filter(ativo=False)
-    
-    if request.method=='POST':
-        if request.POST['data-inicial']!='' and request.POST['data-final']:
-            vagas  = Vaga_Emprego.objects.filter(ativo=True, dt_inclusao__range=[request.POST['data-inicial'], request.POST['data-final']])
-        buscar=True
+
+    if request.method == 'POST':
+        if request.POST['data-inicial'] != '' and request.POST['data-final']:
+            vagas = Vaga_Emprego.objects.filter(ativo=True, dt_inclusao__range=[
+                                                request.POST['data-inicial'], request.POST['data-final']])
+        buscar = True
 
         vagas_com_candidatos = []
         vagas_desativadas_com_candidatos = []
@@ -638,7 +639,7 @@ def vagascomcandidatos(request):
             'buscar': buscar
         }
     else:
-        context={}
+        context = {}
     return render(request, 'vagas/vagas_com_candidatos.html', context)
 
 
@@ -687,7 +688,22 @@ def euOdeioOLuis(request):
             candidato.cpf = validate_CPF(candidato.cpf)
         except Exception as e:
             candidato.cpf = 0
-        
+
         candidato.save()
 
     return redirect('vagas/index.html')
+
+
+def visualizar_vagas_c_trinta_dias(request):
+    vagas = Vaga_Emprego.objects.all()
+    hoje = datetime.today()
+    data_hoje = hoje.date()
+    vagas_um_mes = []
+    for vaga in vagas:
+        dias = data_hoje - vaga.dt_inclusao.date()
+        if  dias.days >= 30:
+            vagas_um_mes.append(vaga)
+    context = {
+        'vagas': vagas_um_mes,
+    }
+    return render(request, 'vagas/vagas_com_trinta_dias.html', context)

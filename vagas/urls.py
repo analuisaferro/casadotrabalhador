@@ -42,7 +42,9 @@ urlpatterns = [
     path('candidatos-por-funcionario/', views.candidatosporfuncionario, name='candidatosporfuncionario'),
     path('candidatos-por-funcionario/<id>', views.funcionario_encaminhados, name='funcionarios_encaminhados'), 
     path('pesquisar-candidatos/', views.pesquisar_candidatos, name='pesquisar_candidatos'), 
-    path('visualizar-candidatos/<id>', views.visualizar_candidato, name='visualizar_candidato'), 
+    path('visualizar-candidatos/<id>', views.visualizar_candidato, name='visualizar_candidato'),
+    path('visualizar-vagas-com-30-dias/', views.visualizar_vagas_c_trinta_dias, name='visualizar_vagas_c_um_mes'),
+
 
     #path('euOdeioOLuis', views.euOdeioOLuis, name="euOdeioOLuis")
 ]

@@ -1,0 +1,46 @@
+{% extends 'base_site.html' %}
+{% block title %}Vaga{% endblock %}
+{% block css %}
+{{block.super}}
+{% endblock%}
+{% block main_conteudo %}
+{% load widget_tweaks %}   
+{% load bootstrap5 %}  
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script> 
+{% if success.0 %}
+<div class="row px-4 mb-3">
+    <div class="col d-flex bg-success py-2">
+        <p class="m-auto text-white">{{success.1}}</p>
+    </div>
+</div>
+{% endif %}                  
+<div class="row">    
+    <div class="col d-flex">
+        <h2 class="text-start text-uppercase">VAGAS COM MAIS DE 30 DIAS</h2>
+    </div>
+  </div>
+  <div class="row">
+    <div class="col">
+        <table class="table table-hover">
+            <thead>
+                <th>Quantidade de vagas</th>
+                <th>Cargo</th>
+                <th>Experiência</th>
+                <th>Escolaridade</th>
+                <th>Data do registro</th>
+            </thead>
+            </tbody>
+        {% for vaga in vagas %}
+            <tr>
+                <td>{{vaga.quantidadeVagas}}</td>
+                <td>{{vaga.cargo}}</td>
+                <td>{{vaga.experiencia}}</td>
+                <td>{{vaga.escolaridade}}</td>
+                <td>{{vaga.dt_inclusao}}</td>
+            </tr>
+        {% endfor %}
+            </tbody>
+        </table>
+    </div>
+  </div>
+{% endblock %}
